@@ -1,0 +1,50 @@
+class-map type control subscriber match-all AAA_SVR_DOWN_AUTHD_HOST
+ match authorization-status authorized
+ match result-type aaa-timeout
+
+class-map type control subscriber match-all AAA_SVR_DOWN_UNAUTHD_HOST
+ match authorization-status unauthorized
+ match result-type aaa-timeout
+
+class-map type control subscriber match-all AUTHC_SUCCESS-AUTHZ_FAIL
+ match authorization-status unauthorized
+ match result-type success
+
+class-map type control subscriber match-all DOT1X
+ match method dot1x
+
+class-map type control subscriber match-all DOT1X_FAILED
+ match method dot1x
+ match result-type method dot1x authoritative
+
+class-map type control subscriber match-all DOT1X_MEDIUM_PRIO
+ match authorizing-method-priority gt 20
+
+class-map type control subscriber match-all DOT1X_NO_RESP
+ match method dot1x
+ match result-type method dot1x agent-not-found
+
+class-map type control subscriber match-all DOT1X_TIMEOUT
+ match method dot1x
+ match result-type method dot1x method-timeout
+
+class-map type control subscriber match-any IN_CRITICAL_AUTH
+ match activated-service-template DefaultCriticalVoice_SRV_TEMPLATE
+
+class-map type control subscriber match-any IN_CRITICAL_AUTH_CLOSED_MODE
+ match activated-service-template DefaultCriticalAuthVlan_SRV_TEMPLATE
+ match activated-service-template DefaultCriticalVoice_SRV_TEMPLATE
+
+class-map type control subscriber match-all MAB
+ match method mab
+
+class-map type control subscriber match-all MAB_FAILED
+ match method mab
+ match result-type method mab authoritative
+
+class-map type control subscriber match-none NOT_IN_CRITICAL_AUTH
+ match activated-service-template DefaultCriticalVoice_SRV_TEMPLATE
+
+class-map type control subscriber match-none NOT_IN_CRITICAL_AUTH_CLOSED_MODE
+ match activated-service-template DefaultCriticalAuthVlan_SRV_TEMPLATE
+ match activated-service-template DefaultCriticalVoice_SRV_TEMPLATE

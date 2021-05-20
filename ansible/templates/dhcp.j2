@@ -1,0 +1,4 @@
+ip dhcp snooping vlan {{ variables.voice_vlan_list }},{{ variables.access_vlan_list}}
+no ip dhcp snooping information option
+ip dhcp snooping
+login on-success log

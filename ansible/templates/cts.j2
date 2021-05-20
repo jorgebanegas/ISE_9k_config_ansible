@@ -1,0 +1,17 @@
+cts authorization list aaa_servers_for_seed_device_nac
+!
+service-template webauth-global-inactive
+ inactivity-timer 3600
+service-template DEFAULT_LINKSEC_POLICY_MUST_SECURE
+ linksec policy must-secure
+service-template DEFAULT_LINKSEC_POLICY_SHOULD_SECURE
+ linksec policy should-secure
+service-template DEFAULT_CRITICAL_VOICE_TEMPLATE
+ voice vlan
+service-template DEFAULT_CRITICAL_DATA_TEMPLATE
+dot1x system-auth-control
+dot1x critical eapol
+
+lldp run
+
+cts credentials id {{ variables.device_hostname }} password {{ variables.ise_password }}

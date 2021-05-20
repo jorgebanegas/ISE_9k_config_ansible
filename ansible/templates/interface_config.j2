@@ -1,0 +1,20 @@
+template DefaultWiredDot1xOpenAuth
+ dot1x pae authenticator
+ switchport access vlan {{ variables.access_vlan_list }}
+ switchport mode access
+ switchport voice vlan {{ variables.voice_vlan_list }}
+ mab
+ access-session control-direction in
+ access-session port-control auto
+ authentication periodic
+ authentication timer reauthenticate server
+ service-policy type control subscriber PMAP_DefaultWiredDot1xOpenAuth_1X_MAB
+
+{% for interface in variables.interfaces %}
+
+interface range {{ interface }}
+ source template DefaultWiredDot1xOpenAuth
+ spanning-tree portfast
+ service-policy output out-queuing
+
+{% endfor %}
