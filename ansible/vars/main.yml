@@ -1,0 +1,13 @@
+variables:
+  description: Test Loopback
+  sc1_key_pac_key :  xxxxxxxx
+  sc1_key_server_key : xxxxxxxx
+  rid_key_pac_key : xxxxxxxx
+  rid_key_server_key : xxxxxxxx
+  access_vlan_list : '521'
+  voice_vlan_list : '1076'
+  device_hostname : xxxxxx
+  ise_password : xxxxxxx
+  interfaces : 
+    - 'Gi1/2 - 3' 
+    - 'Gi2/0'

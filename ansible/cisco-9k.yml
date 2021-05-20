@@ -1,0 +1,79 @@
+# command to run ansible-playbook -i inventory.yml cisco-9k.yml
+# command to run ansible-playbook -i inventory.yml cisco-9k.yml --tags=show_test
+
+---
+- hosts: cat9k
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+  - name: Set Variables
+    include_vars: vars/main.yml
+    tags :
+      - test
+      - aaa_config
+      - dhcp_config
+      - sensor_config
+      - cts_config
+      - class_maps_config
+      - policy_maps_config
+      - show_test
+
+  - name: facts 
+    ios_facts: 
+      gather_subset: all
+
+  - name: testing
+    ios_config:
+      src: test.j2
+    tags : test
+
+  - name: aaa_configuration
+    ios_config:
+      src: aaa.j2
+    tags : aaa_config
+
+  - name : dhcp_configuration
+    ios_config:
+      src: dhcp.j2
+    tags : dhcp_config
+
+  - name : sensor_configuration
+    ios_config:
+      src: sensor.j2
+    tags : sensor_config
+
+  - name : cts_configuration
+    ios_config:
+      src: cts.j2
+    tags : cts_config
+
+  - name : class_maps_configuration
+    ios_config:
+      src: class_maps.j2
+    tags : class_maps_config
+  
+  - name : policy_maps_configuration
+    ios_config:
+      src: policy_maps.j2
+    tags : policy_maps_config
+
+  - name : interface_configuration
+    ios_config:
+      src: interface_config.j2
+    tags : interface_config
+
+  - name: run multiple commands
+    ios_command:
+      commands:
+        - show cts environment-data
+        - show cts pacs
+        - show cts 
+    register: result
+    tags : show_commands
+
+  - name: save output to local directory
+    copy:
+      content: "{{ result.stdout | replace('\\n', '\n') }}"           
+      dest: "output.txt"
+    tags : show_commands
