@@ -1,0 +1,10 @@
+all: 
+  hosts: 
+    cat9k: 
+      ansible_host: x.x.x.x
+      ansible_network_os: ios
+      ansible_user: xxxxx
+      ansible_password: xxxxx
+      ansible_become: yes 
+      ansible_become_method: enable 
+      ansible_ssh_port: 22
