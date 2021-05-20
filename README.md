@@ -10,7 +10,6 @@ Contacts:
 
 **Source Installation**
 
-```
 
 Run playbook file "cisco-9k.yml"
 
