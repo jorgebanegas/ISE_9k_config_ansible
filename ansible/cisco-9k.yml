@@ -17,7 +17,9 @@
       - cts_config
       - class_maps_config
       - policy_maps_config
-      - show_test
+      - show_commands
+      - interface_config
+      - show_commands
 
   - name: facts 
     ios_facts: 

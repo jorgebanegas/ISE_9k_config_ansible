@@ -1,0 +1,56 @@
+# command to run ansible-playbook -i inventory.yml rollback.yml --tags=setup_rollback
+# command to run ansible-playbook -i inventory.yml rollback.yml --tags=save_version
+# command to run ansible-playbook -i inventory.yml rollback.yml --tags=rollback
+
+
+---
+- hosts: cat9k
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+  - name: Set Variables
+    include_vars: vars/main.yml
+    tags :
+      - setup_rollback
+      - rollback
+      - save_version
+
+  - name: setup_roll_back
+    ios_command:
+      commands:
+        - enable
+        - configure terminal
+        - archive
+        - path flash:myconfiguration
+        - maximum 14
+        - end
+        - archive config 
+        - show archive
+    register: result
+    tags : setup_rollback
+
+  - name: save_rollback
+    ios_command:
+      commands:
+        - enable
+        - archive config 
+        - show archive
+    register: result
+    tags : save_version
+
+  - name: save output to local directory
+    copy:
+      content: "{{ result.stdout | replace('\\n', '\n') }}"           
+      dest: "rollbacks.txt"
+    tags : 
+      - setup_rollback
+      - save_version
+  
+  - name: roll_back
+    ios_command:
+      commands:
+        - enable
+        - configure replace {{ variables.rollback_version }} force
+    register: result
+    tags : rollback
