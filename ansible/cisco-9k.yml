@@ -19,7 +19,6 @@
       - policy_maps_config
       - show_commands
       - interface_config
-      - show_commands
 
   - name: facts 
     ios_facts: 
