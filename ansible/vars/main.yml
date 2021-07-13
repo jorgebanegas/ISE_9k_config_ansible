@@ -11,3 +11,4 @@ variables:
   interfaces : 
     - 'Gi1/2 - 3' 
     - 'Gi2/0'
+  rollback_version: xxxxxxxxxx
