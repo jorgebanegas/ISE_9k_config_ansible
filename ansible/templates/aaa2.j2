@@ -1,0 +1,9 @@
+aaa accounting network default start-stop group NS-WAC-GROUP
+aaa accounting system default start-stop group NS-WAC-GROUP
+
+aaa server radius dynamic-author
+ client 10.23.104.4 server-key 7 {{ variables.rid_key_server_key }}
+ client 10.39.93.90 server-key 7 {{ variables.sc1_key_server_key }}
+ auth-type any
+
+aaa session-id common
