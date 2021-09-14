@@ -51,6 +51,6 @@
     ios_command:
       commands:
         - enable
-        - configure replace {{ variables.rollback_version }} force
+        - configure replace flash:{{ variables.rollback_version }} force
     register: result
     tags : rollback
