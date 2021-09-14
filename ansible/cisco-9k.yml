@@ -11,7 +11,9 @@
     include_vars: vars/main.yml
     tags :
       - test
-      - aaa_config
+      - aaa_config1
+      - aaa_config2
+      - aaa_config3
       - dhcp_config
       - sensor_config
       - cts_config
@@ -19,6 +21,7 @@
       - policy_maps_config
       - show_commands
       - interface_config
+      - clear
 
   - name: facts 
     ios_facts: 
@@ -29,10 +32,23 @@
       src: test.j2
     tags : test
 
-  - name: aaa_configuration
+  - name: aaa_configuration part 1
     ios_config:
-      src: aaa.j2
-    tags : aaa_config
+      src: aaa1.j2
+    tags : aaa_config1
+
+  - name: aaa_configuration part 2
+    ios_command:
+      commands:
+      - command: 'aaa accounting identity default start-stop group NS-WAC-GROUP'
+        prompt: '[confirm]'
+        answer: 'y'
+    tags : aaa_config2
+
+  - name: aaa_configuration part 3
+    ios_config:
+      src: aaa2.j2
+    tags : aaa_config3
 
   - name : dhcp_configuration
     ios_config:
@@ -72,7 +88,7 @@
         - show cts 
     register: result
     tags : show_commands
-
+  
   - name: save output to local directory
     copy:
       content: "{{ result.stdout | replace('\\n', '\n') }}"           
