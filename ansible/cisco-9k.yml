@@ -15,7 +15,9 @@
       - aaa_config2
       - aaa_config3
       - dhcp_config
-      - sensor_config
+      - sensor_config1
+      - sensor_config2
+      - sensor_config3
       - cts_config
       - class_maps_config
       - policy_maps_config
@@ -40,6 +42,7 @@
   - name: aaa_configuration part 2
     ios_command:
       commands:
+      - command: 'conf t'
       - command: 'aaa accounting identity default start-stop group NS-WAC-GROUP'
         prompt: '[confirm]'
         answer: 'y'
@@ -55,10 +58,24 @@
       src: dhcp.j2
     tags : dhcp_config
 
-  - name : sensor_configuration
+  - name : sensor_configuration part 1
+    ios_config:
+      src: sensor1.j2
+    tags : sensor_config1
+  
+  - name: sensor_configuration part 2
+    ios_command:
+      commands:
+      - command: 'conf t'
+      - command: 'access-session accounting attributes filter-spec include list DS_LIST'
+        prompt: '[confirm]'
+        answer: 'y'
+    tags : sensor_config2
+  
+  - name : sensor_configuration part 3
     ios_config:
       src: sensor.j2
-    tags : sensor_config
+    tags : sensor_config3
 
   - name : cts_configuration
     ios_config:
@@ -88,6 +105,14 @@
         - show cts 
     register: result
     tags : show_commands
+
+  - name: testing 2
+    ios_command:
+      commands:
+      - command: 'conf t'
+      - command: 'interface loopback99'
+      - command: 'ip address 1.1.1.1 255.255.255.0'
+    tags : testing2
   
   - name: save output to local directory
     copy:

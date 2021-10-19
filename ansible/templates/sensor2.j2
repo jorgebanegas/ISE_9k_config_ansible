@@ -1,0 +1,20 @@
+access-session monitor
+access-session mac-move deny
+access-session acl default passthrough
+no device-tracking logging theft
+device-tracking tracking
+
+
+device-tracking policy DT-Access-Policy
+ no protocol udp
+ tracking enable reachable-lifetime 120
+
+device-tracking policy DT-Trunk-Policy
+ trusted-port
+ device-role switch
+ no protocol udp
+
+device-tracking policy IPDT_MAX_10
+ limit address-count 10
+ no protocol udp
+ tracking enable
