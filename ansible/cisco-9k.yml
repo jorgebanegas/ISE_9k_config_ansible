@@ -11,13 +11,9 @@
     include_vars: vars/main.yml
     tags :
       - test
-      - aaa_config1
-      - aaa_config2
-      - aaa_config3
+      - aaa_config
       - dhcp_config
-      - sensor_config1
-      - sensor_config2
-      - sensor_config3
+      - sensor_config
       - cts_config
       - class_maps_config
       - policy_maps_config
@@ -37,7 +33,7 @@
   - name: aaa_configuration part 1
     ios_config:
       src: aaa1.j2
-    tags : aaa_config1
+    tags : aaa_config
 
   - name: aaa_configuration part 2
     ios_command:
@@ -46,12 +42,13 @@
       - command: 'aaa accounting identity default start-stop group NS-WAC-GROUP'
         prompt: '[confirm]'
         answer: 'y'
-    tags : aaa_config2
+    ignore_errors: yes
+    tags : aaa_config
 
   - name: aaa_configuration part 3
     ios_config:
       src: aaa2.j2
-    tags : aaa_config3
+    tags : aaa_config
 
   - name : dhcp_configuration
     ios_config:
@@ -61,7 +58,7 @@
   - name : sensor_configuration part 1
     ios_config:
       src: sensor1.j2
-    tags : sensor_config1
+    tags : sensor_config
   
   - name: sensor_configuration part 2
     ios_command:
@@ -70,16 +67,26 @@
       - command: 'access-session accounting attributes filter-spec include list DS_LIST'
         prompt: '[confirm]'
         answer: 'y'
-    tags : sensor_config2
+    ignore_errors: yes
+    tags : sensor_config
   
   - name : sensor_configuration part 3
     ios_config:
-      src: sensor.j2
-    tags : sensor_config3
+      src: sensor2.j2
+    tags : sensor_config
 
-  - name : cts_configuration
+  - name : cts_configuration part 1
     ios_config:
       src: cts.j2
+    tags : cts_config
+
+  - name : cts_configuration part 2
+    ios_command:
+      commands:
+      - command: 'cts credentials id {{ variables.device_hostname }} password {{ variables.ise_password }}'
+        prompt: '[confirm]'
+        answer: 'y'
+    ignore_errors: yes
     tags : cts_config
 
   - name : class_maps_configuration
