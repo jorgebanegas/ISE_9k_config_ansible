@@ -4,7 +4,7 @@
 
 
 ---
-- hosts: cat9k
+- hosts: cat9k,cat9k1
   gather_facts: false
   connection: network_cli
 
@@ -42,7 +42,7 @@
   - name: save output to local directory
     copy:
       content: "{{ result.stdout | replace('\\n', '\n') }}"           
-      dest: "rollbacks.txt"
+      dest: "rollbacks/rollback_{{ inventory_hostname }}.txt"
     tags : 
       - setup_rollback
       - save_version

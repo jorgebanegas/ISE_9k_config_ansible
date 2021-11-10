@@ -1,20 +1,14 @@
 aaa new-model
 
 radius server psn-wan-sc1
- address ipv4 10.39.93.90 auth-port 1812 acct-port 1813
+ address ipv4 10.10.20.25 auth-port 1812 acct-port 1813
  pac key  0  {{ variables.sc1_pac_key }}
-
-radius server psn-wac-rid
- address ipv4 10.23.104.4 auth-port 1812 acct-port 1813
- pac key 0 {{ variables.rid_pac_key }}
 
 aaa group server radius NS-WAC-GROUP
  server name psn-wac-sc1
- server name psn-wac-rid
  timeout 4
  retransmit 3
- ip radius source-interface Loopback0
- attribute nas-port format c 
+ attribute nas-port format c
 
 aaa authentication dot1x default group NS-WAC-GROUP
 aaa authorization network default group NS-WAC-GROUP

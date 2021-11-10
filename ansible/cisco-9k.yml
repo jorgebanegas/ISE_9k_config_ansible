@@ -2,11 +2,16 @@
 # command to run ansible-playbook -i inventory.yml cisco-9k.yml --tags=show_test
 
 ---
-- hosts: cat9k
-  gather_facts: false
+- hosts: cat9k,cat9k1
+  gather_facts: True
   connection: network_cli
 
   tasks:
+  - name: Print all available facts
+    ansible.builtin.debug:
+      var: ansible_facts
+    tags : facts
+    
   - name: Set Variables
     include_vars: vars/main.yml
     tags :
@@ -32,7 +37,7 @@
 
   - name: aaa_configuration part 1
     ios_config:
-      src: aaa1.j2
+      src: aaa1_temp.j2
     tags : aaa_config
 
   - name: aaa_configuration part 2
@@ -47,7 +52,7 @@
 
   - name: aaa_configuration part 3
     ios_config:
-      src: aaa2.j2
+      src: aaa2_temp.j2
     tags : aaa_config
 
   - name : dhcp_configuration
@@ -83,7 +88,7 @@
   - name : cts_configuration part 2
     ios_command:
       commands:
-      - command: 'cts credentials id {{ variables.device_hostname }} password {{ variables.ise_password }}'
+      - command: 'cts credentials id {{ ansible_net_hostname }} password {{ variables.ise_password }}'
         prompt: '[confirm]'
         answer: 'y'
     ignore_errors: yes
@@ -113,7 +118,7 @@
     register: result
     tags : show_commands
 
-  - name: testing 2
+  - name: testing_2
     ios_command:
       commands:
       - command: 'conf t'
@@ -124,5 +129,5 @@
   - name: save output to local directory
     copy:
       content: "{{ result.stdout | replace('\\n', '\n') }}"           
-      dest: "output.txt"
+      dest: "output_{{ inventory_hostname }}.txt"
     tags : show_commands
